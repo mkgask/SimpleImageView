@@ -8,7 +8,20 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body class="body" id="body">
-    <header class="header" id="header"></header>
+
+    <nav class="nav" id="nav">
+        <span class="zoom-in" id="zoom-in">＋</span>
+        <span class="zoom-out" id="zoom-out">－</span>
+        <span class="config"></span>
+        <span class="next"></span>
+        <span class="prev"></span>
+    </nav>
+
+    <aside class="aside" id="aside">
+        <span class="file-name"></span>
+        <span class="image-size"></span>
+        <span class="file-size"></span>
+    </aside>
 
     <main class="main" id="main">
         <div class="image-box" id="image-box">
@@ -16,8 +29,7 @@
         </div>
     </main>
 
-    <footer class="footer" id="footer"></footer>
-
     <script src="renderer.js"></script>
+    <script src="zoom-in-out.js"></script>
   </body>
 </html>
