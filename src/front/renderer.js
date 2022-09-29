@@ -41,3 +41,12 @@ document.addEventListener('dragover', (e) => {
     e.stopPropagation()
 })
 
+
+
+// 関連付けを開く対応
+window.defaultImage.defaultImage((ev, path) => {
+    if (!path) return
+    document.getElementById('main-image').src = path
+})
+
+

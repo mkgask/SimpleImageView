@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
 
 
-
 // サンドボックス機能を有効化
 app.enableSandbox()
 
@@ -27,7 +26,12 @@ const createWindow = () => {
 
     mainWindow.loadFile(path.join(__dirname, 'front/index.html'))
 
-    mainWindow.webContents.openDevTools()
+    if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
+
+    mainWindow.webContents.once('did-finish-load', () => {
+        const defaultImage = require('./defaultImage')()
+        mainWindow.webContents.send('default-image', defaultImage)
+    })
 
     // ダークテーマ対応
     ipcMain.handle('dark-mode:toggle', () => {
