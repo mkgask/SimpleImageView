@@ -17,13 +17,15 @@ const createWindow = () => {
         height: store.get('h'),
         center: false,
 
-        title: "Image View",
+        title: "Simple image view",
+        disableAutoHideCursor: true,
 
         webPreferences: {
             preload: path.join(__dirname, 'back/preload.js')
         }
     })
 
+    mainWindow.removeMenu()
     mainWindow.loadFile(path.join(__dirname, 'front/index.html'))
 
     if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
