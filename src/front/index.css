@@ -16,10 +16,12 @@ body { margin: 0; }
     position: absolute;
 }
 
-
-
 .aside {
     position: absolute;
+}
+
+.inactive {
+    display: none;
 }
 
 
@@ -34,11 +36,20 @@ body { margin: 0; }
     overflow: auto;
 }
 
+.image-box.over-width {
+    justify-content: flex-start;
+}
+
+.image-box.over-height {
+    align-items: flex-start;
+}
+
 
 
 .main-image {
     max-width: 100vw;
     max-height: 100vh;
+    object-fit: contain;
 }
 
 
