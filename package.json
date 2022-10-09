@@ -2,7 +2,7 @@
   "name": "image-viewer",
   "version": "0.1.0",
   "description": "Image viewer",
-  "main": "src/index.js",
+  "main": "src/background.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
