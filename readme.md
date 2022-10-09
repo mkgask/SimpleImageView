@@ -1,6 +1,6 @@
-# Simple image view
+# Siv-ev
 
-under construction.
+Simple image view - electron vanillaJS
 
 
 
@@ -12,7 +12,9 @@ under construction.
 - First show size is under window size when image is larger then window
 - Zoom in/out with mouse wheel
 - View position can move with mouse drag when image is larger than window
-
+- show/hide navigation button when window click
+- show previews image
+- show next image
 
 
 ## 機能
@@ -23,5 +25,7 @@ under construction.
 - 画像がウィンドウより大きいとき、初期表示ではウィンドウに収まるように表示
 - マウスホイールで拡大縮小
 - 画像の表示がウィンドウより大きいとき、マウスドラッグで表示位置を移動
-
+- ウィンドウクリックでナビゲーションバーを表示/非表示
+- 次の画像を表示
+- 前の画像を表示
 
