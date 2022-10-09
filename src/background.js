@@ -10,6 +10,11 @@ app.enableSandbox()
 const createWindow = () => {
     const store = require('./store')
 
+    const changeViewFile = (path) => {
+        store.set({ viewingFile: path })
+        mainWindow.webContents.send('viewImage', path)
+    }
+
     const mainWindow = new BrowserWindow({
         x: store.get('x'),
         y: store.get('y'),
@@ -31,14 +36,9 @@ const createWindow = () => {
     if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
 
     mainWindow.webContents.once('did-finish-load', () => {
-        const viewingFile = store.get('viewingFile')
         const defaultImage = require('./defaultImage')()
-        if (defaultImage) { viewingFile = defaultImage }
-
-        if (viewingFile) {
-            store.set({ viewingFile: viewingFile })
-            mainWindow.webContents.send('viewImage', viewingFile)
-        }
+        const viewingFile = defaultImage ?? store.get('viewingFile')
+        if (viewingFile) { changeViewFile(viewingFile) }
     })
 
     // ダークテーマ対応
@@ -75,8 +75,7 @@ const createWindow = () => {
         for await (const dircurrent of dir) {
             if (viewFile === dircurrent.name ) {
                 const viewPath = path.join(dirname, previewFile)
-                store.set({ viewingFile: viewPath })
-                mainWindow.webContents.send('viewImage', viewPath)
+                changeViewFile(viewPath)
                 return
             }
 
@@ -96,8 +95,7 @@ const createWindow = () => {
         for await (const dircurrent of dir) {
             if (nextFile) {
                 const viewPath = path.join(dirname, dircurrent.name)
-                store.set({ viewingFile: viewPath })
-                mainWindow.webContents.send('viewImage', viewPath)
+                changeViewFile(viewPath)
                 return
             }
 
