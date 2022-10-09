@@ -11,12 +11,35 @@ const classname_over_height = 'over-height'
 const zoomin_element = document.getElementById('zoom-in')
 const zoomout_element = document.getElementById('zoom-out')
 
+let isLeftDown = false
+let isRightDown = false
+
 zoomin_element.addEventListener('click', (ev) => {
     zoomIn()
 })
 
 zoomout_element.addEventListener('click', (ev) => {
     zoomOut()
+})
+
+
+document.addEventListener('mousedown', (ev) => {
+    ev.preventDefault()
+
+    if (ev.button === 0) { isLeftDown = true }
+    if (ev.button === 2) { isRightDown = true }
+})
+
+document.addEventListener('mouseup', (ev) => {
+    ev.preventDefault()
+
+    if (ev.button === 0 && isRightDown) {
+        //zoomReset()
+        zoomResetToggle()
+    }
+
+    if (ev.button === 0) { isLeftDown = false }
+    if (ev.button === 2) { isRightDown = false }
 })
 
 document.addEventListener('wheel', (ev) => {
@@ -41,6 +64,43 @@ function zoomOut() {
     zoom_level -= zoom_adjust
     if (zoom_level < zoom_level_min) zoom_level = zoom_level_min
     changeZoom()
+}
+
+function zoomReset() {
+    zoom_level = zoom_level_default
+    changeZoom()
+}
+
+function zoomResetOriginal(h) {
+    const main_image = document.getElementById('main-image')
+    main_image.style.height = h + 'px'
+
+    zoom_level = Math.round((h / body.clientHeight) * 100)
+}
+
+function zoomResetToggle() {
+    const main_image = document.getElementById('main-image')
+    const image_width = main_image.naturalWidth
+    const image_height = main_image.naturalHeight
+
+    // 画像がウィンドウより大きい時
+    if (body.clientWidth < image_width ||
+        body.clientHeight < image_height
+    ) {
+        zoomReset()
+    } else {
+    // 画像がウィンドウより小さい時
+        // ウィンドウの内寸にぴったりの表示ならzoomResetOriginal
+        if (body.clientWidth === main_image.clientWidth ||
+            body.clientHeight === main_image.clientHeight
+        ) {
+            zoomResetOriginal(image_height)
+        } else {
+            // ウィンドウより大きい表示ならzoomReset
+            // 画像オリジナルの表示ならzoomReset
+            zoomReset()
+        }
+    }
 }
 
 function changeZoom() {

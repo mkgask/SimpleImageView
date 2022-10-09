@@ -1,6 +1,4 @@
 
-
-
 // ダークテーマ対応
 /*
 document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
@@ -20,7 +18,6 @@ document.getElementById('reset-to-system').addEventListener('click', async () =>
 // ファイルドロップ対応
 document.addEventListener('drop', (ev) => {
     ev.preventDefault()
-    ev.stopPropagation()
 
     // Files以外のドロップには対応しない
     for (const type of ev.dataTransfer.types) {
@@ -38,7 +35,6 @@ document.addEventListener('drop', (ev) => {
 
 document.addEventListener('dragover', (e) => {
     e.preventDefault()
-    e.stopPropagation()
 })
 
 

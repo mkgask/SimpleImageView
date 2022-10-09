@@ -17,7 +17,6 @@ document.addEventListener('mousedown', (ev) => {
     ev.preventDefault()
 
     isMoving = true
-
     reference.x = ev.clientX
     reference.y = ev.clientY
 })
