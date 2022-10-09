@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Simple image view</title>
     <link rel="stylesheet" href="./index.css" />
-  </head>
-  <body class="body" id="body">
+    <link rel="stylesheet" href="./nav.css" />
+</head>
 
+<body class="body" id="body">
     <nav class="nav inactive" id="nav">
-        <span class="zoom-in" id="zoom-in">＋</span>
-        <span class="zoom-out" id="zoom-out">－</span>
-        <span class="config"></span>
-        <span class="prev">&lt;</span>
-        <span class="next">&gt;</span>
+        <div class="nav-zoom">
+            <span class="nav-icon zoom-in" id="zoom-in">＋</span>
+            <span class="nav-icon zoom-out" id="zoom-out">－</span>
+        </div>
+
+        <div class="nav-config">
+            <span class="nav-icon config"></span>
+        </div>
+
+        <div class="nav-moveview">
+            <span class="nav-icon prev" id="prev_button">&lt;</span>
+            <span class="nav-icon next" id="next_button">&gt;</span>
+        </div>
     </nav>
 
     <aside class="aside inactive" id="aside">
@@ -27,11 +37,16 @@
         <div class="image-box" id="image-box">
             <img class="main-image" id="main-image" src="" alt="" />
         </div>
+
+        <div class="image-control image-prev" id="image-prev">&lt;</div>
+        <div class="image-control image-next" id="image-next">&gt;</div>
     </main>
 
     <script src="renderer.js"></script>
+    <script src="menu-toggle.js"></script>
     <script src="zoom-in-out.js"></script>
     <script src="mouse-move.js"></script>
-    <script src="menu-toggle.js"></script>
-  </body>
+    <script src="view-move.js"></script>
+</body>
+
 </html>

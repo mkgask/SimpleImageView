@@ -6,7 +6,7 @@ let isMenuOpen = false
 const classname_active = 'active'
 const classname_inactive = 'inactive'
 
-/*
+
 document.addEventListener('click', () => {
     const nav = document.getElementById('nav')
     const aside = document.getElementById('aside')
@@ -46,6 +46,4 @@ document.addEventListener('click', () => {
             aside.classList.remove(classname_active)
         }
     }
-
 })
-*/

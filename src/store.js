@@ -23,7 +23,8 @@ module.exports = new electronStore({
         x: Math.floor(size.width / 2) - Math.floor(defaultSize.w / 2),
         y: Math.floor(size.height / 2) - Math.floor(defaultSize.h / 2),
         w: defaultSize.w,
-        h: defaultSize.h
+        h: defaultSize.h,
+        viewing_file: ''
     }
 })
 

@@ -28,8 +28,8 @@ document.addEventListener('drop', (ev) => {
         // 画像以外のドロップには対応しない
         if ( !file.type.match( /^image\/.*/ ) ) { return false; }
 
-        const element = document.getElementById('main-image')
-        element.src = file.path
+        document.getElementById('main-image').src = file.path
+        window.dropFile.dropFile(file.path)
     }
 })
 
@@ -40,7 +40,7 @@ document.addEventListener('dragover', (e) => {
 
 
 // 関連付けを開く対応
-window.defaultImage.defaultImage((ev, path) => {
+window.viewImage.viewImage((ev, path) => {
     if (!path) return
     document.getElementById('main-image').src = path
 })

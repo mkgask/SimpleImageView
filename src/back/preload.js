@@ -11,8 +11,25 @@ contextBridge.exposeInMainWorld('darkMode', {
 
 
 // 関連付けを開く対応
-contextBridge.exposeInMainWorld('defaultImage', {
-    defaultImage: (listner) => { ipcRenderer.on('default-image', listner) }
+contextBridge.exposeInMainWorld('viewImage', {
+    viewImage: (listner) => { ipcRenderer.on('viewImage', listner) }
+})
+
+
+
+// ドロップされたファイル名を受け取り
+contextBridge.exposeInMainWorld('dropFile', {
+    dropFile: (dropFilePath) => { ipcRenderer.invoke('dropFile', dropFilePath) }
+})
+
+// 前のファイルを表示
+contextBridge.exposeInMainWorld('prevView', {
+    prevView: () => { ipcRenderer.invoke('prevView') },
+})
+
+// 次のファイルを表示
+contextBridge.exposeInMainWorld('nextView', {
+    nextView: () => { ipcRenderer.invoke('nextView') }
 })
 
 

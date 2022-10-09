@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
-
+const fs = require('fs/promises')
 
 // サンドボックス機能を有効化
 app.enableSandbox()
@@ -31,8 +31,14 @@ const createWindow = () => {
     if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
 
     mainWindow.webContents.once('did-finish-load', () => {
+        const viewingFile = store.get('viewingFile')
         const defaultImage = require('./defaultImage')()
-        mainWindow.webContents.send('default-image', defaultImage)
+        if (defaultImage) { viewingFile = defaultImage }
+
+        if (viewingFile) {
+            store.set({ viewingFile: viewingFile })
+            mainWindow.webContents.send('viewImage', viewingFile)
+        }
     })
 
     // ダークテーマ対応
@@ -49,6 +55,56 @@ const createWindow = () => {
     // ダークテーマ対応
     ipcMain.handle('dark-mode:system', () => {
         nativeTheme.themeSource = 'system'
+    })
+
+    // ドロップされたファイル名を受け取り
+    ipcMain.handle('dropFile', (ev, dropFilePath) => {
+        store.set({ viewingFile: dropFilePath })
+        mainWindow.webContents.send('viewImage', dropFilePath)
+    })
+
+    // 前のファイルを表示
+    ipcMain.handle('prevView', async (ev) => {
+        const viewingFile = store.get('viewingFile')
+        const dirname = path.dirname(viewingFile)
+        const viewFile = path.basename(viewingFile)
+        let previewFile = ''
+
+        const dir = await fs.opendir(dirname)
+
+        for await (const dircurrent of dir) {
+            if (viewFile === dircurrent.name ) {
+                const viewPath = path.join(dirname, previewFile)
+                store.set({ viewingFile: viewPath })
+                mainWindow.webContents.send('viewImage', viewPath)
+                return
+            }
+
+            previewFile = dircurrent.name
+        }
+    })
+
+    // 次のファイルを表示
+    ipcMain.handle('nextView', async (ev) => {
+        const viewingFile = store.get('viewingFile')
+        const dirname = path.dirname(viewingFile)
+        const viewFile = path.basename(viewingFile)
+        let nextFile = false
+
+        const dir = await fs.opendir(dirname)
+
+        for await (const dircurrent of dir) {
+            if (nextFile) {
+                const viewPath = path.join(dirname, dircurrent.name)
+                store.set({ viewingFile: viewPath })
+                mainWindow.webContents.send('viewImage', viewPath)
+                return
+            }
+
+            if (viewFile === dircurrent.name ) {
+                nextFile = true
+            }
+        }
     })
 
     // 終了時データ保存
