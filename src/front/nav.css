@@ -19,6 +19,13 @@
     display: none;
 }
 
+.nav-zoom,
+.nav-config,
+.nav-moveview {
+    display: flex;
+    align-items: center;
+}
+
 .nav-icon {
     padding: 10px;
     height: 30px;

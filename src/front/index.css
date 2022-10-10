@@ -54,7 +54,7 @@ body { margin: 0; }
 
 
 
-.image-prev {
+.image-control.image-prev {
     position: absolute;
     z-index: 110;
     top: 0;
@@ -63,7 +63,7 @@ body { margin: 0; }
     height: 100vh;
 }
 
-.image-next {
+.image-control.image-next {
     position: absolute;
     z-index: 120;
     top: 0;
