@@ -54,6 +54,27 @@ body { margin: 0; }
 
 
 
+.image-prev {
+    position: absolute;
+    z-index: 110;
+    top: 0;
+    left: 0;
+    width: 25vw;
+    height: 100vh;
+}
+
+.image-next {
+    position: absolute;
+    z-index: 120;
+    top: 0;
+    right: 0;
+    width: 25vw;
+    height: 100vh;
+}
+
+
+
+
 @media (prefers-color-scheme: dark) {
     body { background-color: #333; color: #fff;}
 }

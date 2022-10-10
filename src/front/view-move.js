@@ -1,9 +1,28 @@
 
 
 
-const prev_button = document.getElementById('prev_button')
-const next_button = document.getElementById('next_button')
+const prev_button = document.getElementsByClassName('image-prev')
+const next_button = document.getElementsByClassName('image-next')
 
+for (const elem of prev_button) {
+    elem.addEventListener('click', (ev) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        window.prevView.prevView()
+    })
+}
+
+for (const elem of next_button) {
+    elem.addEventListener('click', (ev) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        window.nextView.nextView()
+    })
+}
+
+/*
 prev_button.addEventListener('click', (ev) => {
     ev.preventDefault()
     ev.stopPropagation()
@@ -17,3 +36,4 @@ next_button.addEventListener('click', (ev) => {
 
     window.nextView.nextView()
 })
+*/

@@ -12,10 +12,10 @@ Simple image view - electron vanillaJS
 - First show size is under window size when image is larger then window
 - Zoom in/out with mouse wheel
 - View position can move with mouse drag when image is larger than window
-- show/hide navigation button when window click
-- show previews image
-- show next image
-
+- Show/Hide navigation button when window click
+- Show previews image
+- Show next image
+- Prev/Next image show when click window left/right area
 
 ## 機能
 
@@ -28,4 +28,4 @@ Simple image view - electron vanillaJS
 - ウィンドウクリックでナビゲーションバーを表示/非表示
 - 次の画像を表示
 - 前の画像を表示
-
+- ウィンドウの左右エリアをクリックで前へ/次へ
