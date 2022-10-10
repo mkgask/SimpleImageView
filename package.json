@@ -1,7 +1,7 @@
 {
-  "name": "image-viewer",
+  "name": "Siv-ev",
   "version": "0.1.0",
-  "description": "Image viewer",
+  "description": "Simple image view - electron vanillaJS",
   "main": "src/background.js",
   "scripts": {
     "start": "electron-forge start",
@@ -34,7 +34,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "image_viewer"
+            "name": "Siv-ev"
           }
         },
         {
