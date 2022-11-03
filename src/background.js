@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
 const fs = require('fs/promises')
 
+const utils = require('./utils')
+
 // サンドボックス機能を有効化
 app.enableSandbox()
 
@@ -10,9 +12,16 @@ app.enableSandbox()
 const createWindow = () => {
     const store = require('./store')
 
-    const changeViewFile = (path) => {
+    // ファイルを開く
+    const changeViewFile = async (path) => {
         store.set({ viewingFile: path })
-        mainWindow.webContents.send('viewImage', path)
+
+        const stat = await fs.stat(path)
+
+        mainWindow.webContents.send('viewImage', {
+            path: path,
+            filesize: utils.fileSizeString(stat.size)
+        })
     }
 
     const mainWindow = new BrowserWindow({
@@ -35,7 +44,9 @@ const createWindow = () => {
 
     if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
 
+    // ロード終了時
     mainWindow.webContents.once('did-finish-load', () => {
+        // 関連付けを開く
         const defaultImage = require('./defaultImage')()
         const viewingFile = defaultImage ?? store.get('viewingFile')
         if (viewingFile) { changeViewFile(viewingFile) }
@@ -59,8 +70,7 @@ const createWindow = () => {
 
     // ドロップされたファイル名を受け取り
     ipcMain.handle('dropFile', (ev, dropFilePath) => {
-        store.set({ viewingFile: dropFilePath })
-        mainWindow.webContents.send('viewImage', dropFilePath)
+        if (dropFilePath) { changeViewFile(dropFilePath) }
     })
 
     // 前のファイルを表示

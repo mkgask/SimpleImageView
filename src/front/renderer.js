@@ -39,10 +39,12 @@ document.addEventListener('dragover', (e) => {
 
 
 
-// 関連付けを開く対応
-window.viewImage.viewImage((ev, path) => {
-    if (!path) return
-    document.getElementById('main-image').src = path
+// ファイルを開く
+window.viewImage.viewImage((ev, args) => {
+    if (!args.path) return
+    document.getElementById('main-image').src = args.path
+    document.getElementsByClassName('file-name').item(0).innerHTML = args.path
+    document.getElementsByClassName('file-size').item(0).innerHTML = args.filesize
 })
 
 

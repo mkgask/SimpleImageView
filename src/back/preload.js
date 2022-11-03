@@ -10,9 +10,11 @@ contextBridge.exposeInMainWorld('darkMode', {
 
 
 
-// 関連付けを開く対応
+// ファイルを開く
 contextBridge.exposeInMainWorld('viewImage', {
-    viewImage: (listner) => { ipcRenderer.on('viewImage', listner) }
+    viewImage: (listner, args) => {
+        ipcRenderer.on('viewImage', listner, args)
+    }
 })
 
 
