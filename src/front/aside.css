@@ -20,5 +20,5 @@
 }
 
 .aside.inactive {
-    display: none;
+    z-index: -200;
 }

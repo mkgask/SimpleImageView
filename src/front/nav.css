@@ -19,7 +19,7 @@
 }
 
 .nav.inactive {
-    display: none;
+    z-index: -100;
 }
 
 .nav-zoom,
