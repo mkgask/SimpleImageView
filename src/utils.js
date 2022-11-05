@@ -1,20 +1,90 @@
+const path = require('path')
+const fs = require('fs/promises')
+
+const store = require('./store')
+
+
 
 const KB = 1024;
 const MB = KB * KB;
 const GB = MB * KB;
 
-module.exports = {
-    fileSizeString: (filesize) => {
-        if (GB < filesize) {
-            return Math.round(filesize / GB) + ' GB';
+
+
+const fileSizeString = (filesize) => {
+    if (GB < filesize) {
+        return Math.round(filesize / GB) + ' GB';
+    }
+
+    if (MB < filesize) {
+        return Math.round(filesize / MB) + ' MB';
+    }
+
+    if (KB < filesize) {
+        return Math.round(filesize / KB) + ' KB';
+    }
+}
+
+
+
+const changeViewFile = async (path, mainWindow) => {
+    store.set({ viewingFile: path })
+
+    const stat = await fs.stat(path)
+
+    mainWindow.webContents.send('viewImage', {
+        path: path,
+        filesize: fileSizeString(stat.size)
+    })
+}
+
+
+
+const previewsFile = async (viewingFile, mainWindow) => {
+    const dirname = path.dirname(viewingFile)
+    const viewFile = path.basename(viewingFile)
+    let previewFile = ''
+
+    const dir = await fs.opendir(dirname)
+
+    for await (const dircurrent of dir) {
+        if (viewFile === dircurrent.name ) {
+            const viewPath = path.join(dirname, previewFile)
+            changeViewFile(viewPath, mainWindow)
+            return
         }
 
-        if (MB < filesize) {
-            return Math.round(filesize / MB) + ' MB';
+        previewFile = dircurrent.name
+    }
+}
+
+
+
+const nextFile = async (viewingFile, mainWindow) => {
+    const dirname = path.dirname(viewingFile)
+    const viewFile = path.basename(viewingFile)
+    let nextFile = false
+
+    const dir = await fs.opendir(dirname)
+
+    for await (const dircurrent of dir) {
+        if (nextFile) {
+            const viewPath = path.join(dirname, dircurrent.name)
+            changeViewFile(viewPath, mainWindow)
+            return
         }
 
-        if (KB < filesize) {
-            return Math.round(filesize / KB) + ' KB';
+        if (viewFile === dircurrent.name ) {
+            nextFile = true
         }
     }
+}
+
+
+
+module.exports = {
+    fileSizeString: fileSizeString,
+    changeViewFile: changeViewFile,
+    previewsFile: previewsFile,
+    nextFile: nextFile
 }

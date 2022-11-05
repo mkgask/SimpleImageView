@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
 const fs = require('fs/promises')
 
-const utils = require('./utils')
 
 // サンドボックス機能を有効化
 app.enableSandbox()
@@ -10,19 +9,8 @@ app.enableSandbox()
 
 
 const createWindow = () => {
+    const utils = require('./utils')
     const store = require('./store')
-
-    // ファイルを開く
-    const changeViewFile = async (path) => {
-        store.set({ viewingFile: path })
-
-        const stat = await fs.stat(path)
-
-        mainWindow.webContents.send('viewImage', {
-            path: path,
-            filesize: utils.fileSizeString(stat.size)
-        })
-    }
 
     const mainWindow = new BrowserWindow({
         x: store.get('x'),
@@ -42,14 +30,13 @@ const createWindow = () => {
     mainWindow.removeMenu()
     mainWindow.loadFile(path.join(__dirname, 'front/index.html'))
 
-    if ( process.env.ReleaseType === 'Debug') { mainWindow.webContents.openDevTools() }
+    if ( process.env.ReleaseType === 'Debug' ) { mainWindow.webContents.openDevTools() }
 
-    // ロード終了時
     mainWindow.webContents.once('did-finish-load', () => {
         // 関連付けを開く
         const defaultImage = require('./defaultImage')()
         const viewingFile = defaultImage ?? store.get('viewingFile')
-        if (viewingFile) { changeViewFile(viewingFile) }
+        if (viewingFile) { utils.changeViewFile(viewingFile, mainWindow) }
     })
 
     // ダークテーマ対応
@@ -70,49 +57,19 @@ const createWindow = () => {
 
     // ドロップされたファイル名を受け取り
     ipcMain.handle('dropFile', (ev, dropFilePath) => {
-        if (dropFilePath) { changeViewFile(dropFilePath) }
+        if (dropFilePath) { utils.changeViewFile(dropFilePath, mainWindow) }
     })
 
     // 前のファイルを表示
     ipcMain.handle('prevView', async (ev) => {
         const viewingFile = store.get('viewingFile')
-        const dirname = path.dirname(viewingFile)
-        const viewFile = path.basename(viewingFile)
-        let previewFile = ''
-
-        const dir = await fs.opendir(dirname)
-
-        for await (const dircurrent of dir) {
-            if (viewFile === dircurrent.name ) {
-                const viewPath = path.join(dirname, previewFile)
-                changeViewFile(viewPath)
-                return
-            }
-
-            previewFile = dircurrent.name
-        }
+        return await utils.previewsFile(viewingFile, mainWindow)
     })
 
     // 次のファイルを表示
     ipcMain.handle('nextView', async (ev) => {
         const viewingFile = store.get('viewingFile')
-        const dirname = path.dirname(viewingFile)
-        const viewFile = path.basename(viewingFile)
-        let nextFile = false
-
-        const dir = await fs.opendir(dirname)
-
-        for await (const dircurrent of dir) {
-            if (nextFile) {
-                const viewPath = path.join(dirname, dircurrent.name)
-                changeViewFile(viewPath)
-                return
-            }
-
-            if (viewFile === dircurrent.name ) {
-                nextFile = true
-            }
-        }
+        return await utils.nextFile(viewingFile, mainWindow)
     })
 
     // 終了時データ保存
