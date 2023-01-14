@@ -22,3 +22,13 @@
 .aside.inactive {
     z-index: -200;
 }
+
+.aside-sub {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.file-size {
+    margin-right: 1em;
+}

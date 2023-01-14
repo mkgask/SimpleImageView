@@ -45,6 +45,7 @@ window.viewImage.viewImage((ev, args) => {
     document.getElementById('main-image').src = args.path
     document.getElementsByClassName('file-name').item(0).innerHTML = args.path
     document.getElementsByClassName('file-size').item(0).innerHTML = args.filesize
+    document.getElementsByClassName('image-size').item(0).innerHTML = args.imagesize
 })
 
 
