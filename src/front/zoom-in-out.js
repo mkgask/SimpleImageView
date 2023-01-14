@@ -23,6 +23,7 @@ zoomout_element.addEventListener('click', (ev) => {
 })
 
 
+
 document.addEventListener('mousedown', (ev) => {
     ev.preventDefault()
 

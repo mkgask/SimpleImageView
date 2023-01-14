@@ -5,18 +5,20 @@ const prev_button = document.getElementsByClassName('image-prev')
 const next_button = document.getElementsByClassName('image-next')
 
 for (const elem of prev_button) {
-    elem.addEventListener('click', (ev) => {
+    elem.addEventListener('mouseup', (ev) => {
         ev.preventDefault()
         ev.stopPropagation()
+        if (isMoved) { return }
 
         window.prevView.prevView()
     })
 }
 
 for (const elem of next_button) {
-    elem.addEventListener('click', (ev) => {
+    elem.addEventListener('mouseup', (ev) => {
         ev.preventDefault()
         ev.stopPropagation()
+        if (isMoved) { return }
 
         window.nextView.nextView()
     })

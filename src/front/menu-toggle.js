@@ -7,9 +7,11 @@ const classname_active = 'active'
 const classname_inactive = 'inactive'
 
 
-document.addEventListener('click', () => {
+document.addEventListener('mouseup', () => {
     const nav = document.getElementById('nav')
     const aside = document.getElementById('aside')
+    if (isRightDown) { return }
+    if (isMoved) { return }
 
     isMenuOpen = !isMenuOpen
 

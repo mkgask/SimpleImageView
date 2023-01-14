@@ -4,6 +4,7 @@
 const main_image = document.getElementById('main-image')
 
 let isMoving = false
+let isMoved = false
 
 const reference = {
     x: 0,
@@ -25,12 +26,14 @@ document.addEventListener('mouseup', (ev) => {
     ev.preventDefault()
 
     isMoving = false
+    isMoved = false
 })
 
 document.addEventListener('blur', (ev) => {
     ev.preventDefault()
 
     isMoving = false
+    isMoved = false
 })
 
 document.addEventListener('mousemove', (ev) => {
@@ -41,6 +44,8 @@ document.addEventListener('mousemove', (ev) => {
             ev.clientY === reference.y) {
         return
     }
+
+    isMoved = true
 
     to = {
         left: main_image.parentNode.scrollLeft + ((reference.x - ev.clientX) * sensitivity),
