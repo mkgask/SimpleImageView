@@ -1,6 +1,5 @@
 const path = require('path')
 const fs = require('fs/promises')
-const jimp = require('jimp')
 
 const store = require('./store')
 
@@ -34,14 +33,13 @@ const changeViewFile = async (path, mainWindow) => {
     const stat = await fs.stat(path)
 
     // 画像の解像度取得
-    jimp.read(path, (err, image) => {
-        if (err) throw err
+    const sizeOf = require('image-size')
+    const dimensions = sizeOf(path)
 
-        mainWindow.webContents.send('viewImage', {
-            path: path,
-            filesize: fileSizeString(stat.size),
-            imagesize: 'w' + image.bitmap.width + 'px h' + image.bitmap.height + 'px'
-        })
+    mainWindow.webContents.send('viewImage', {
+        path: path,
+        filesize: fileSizeString(stat.size),
+        imagesize: 'w' + dimensions.width + 'px h' + dimensions.height + 'px'
     })
 }
 
